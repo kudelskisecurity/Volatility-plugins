@@ -83,7 +83,10 @@ class DyreScan(taskmods.PSList):
             outfd.write('Configuration found in Process: {0} ({1})\n\n'.format(task.ImageFileName, task.UniqueProcessId))
             proc_addr_space = task.get_process_address_space()
             conf_data = proc_addr_space.read(address + self._config.YARAOFFSET, self._config.CONFSIZE)
-            config = conf_data.splitlines()
+            try:
+                config = conf_data.splitlines()
+            except:
+                pass
             config_tag = ("<litem>", "</litem>", "srv_name", "</serverlist>", "<server>", "<serverlist>", "</server>", "<localitems>", ".reloc", "[nowait]")  # remove line not relevant
             full_list = list()
             for i in config:
