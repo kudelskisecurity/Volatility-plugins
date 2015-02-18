@@ -73,6 +73,7 @@ class DyreScan(taskmods.PSList):
 
     def render_text(self, outfd, data):
         """ Required: Parse data and display """
+        config = None
         full_list = list()
         delim = '-=' * 39 + '-'
         rules = yara.compile(sources=YARA_SIGS)
@@ -89,11 +90,12 @@ class DyreScan(taskmods.PSList):
             except:
                 pass
             config_tag = ("<litem>", "</litem>", "srv_name", "</serverlist>", "<server>", "<serverlist>", "</server>", "<localitems>", ".reloc", "[nowait]")  # remove line not relevant
-            for i in config:
-                if any(s in i for s in config_tag):
-                    pass
-                else:
-                    full_list.append(i)
+            if config is not None:
+                for i in config:
+                    if any(s in i for s in config_tag):
+                        pass
+                    else:
+                        full_list.append(i)
         url_match = (".i2p", ".com", "/*", "www.", ".aspx", ".do", ".htm", ".jsp", ".cfm", ".co.uk")
         if full_list:
             for j in sorted(set(full_list)):
